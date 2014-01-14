@@ -1,6 +1,6 @@
 # Linguist
 
-We use this library at GitHub to detect blob languages, highlight code, ignore binary files, suppress generated files in diffs and generate language breakdown graphs.
+GitHub uses this library to detect blob languages, highlight code, ignore binary files, suppress generated files in diffs and generate language breakdown graphs.
 
 ## Features
 
@@ -83,4 +83,4 @@ Almost all bug fixes or new language additions should come with some additional 
 
 Sometimes getting the tests running can be to much work especially if you don't have much Ruby experience. Its okay, be lazy and let our build bot [Travis](http://travis-ci.org/#!/github/linguist) run the tests for you. Just open a pull request and the bot will start cranking away.
 
-Heres our current build status, which is hopefully green: [![Build Status](https://secure.travis-ci.org/github/linguist.png?branch=master)](http://travis-ci.org/github/linguist)
+Heres our current build status, which is hopefully green: [![Build Status](https://secure.travis-ci.org/cooljeanius/linguist.png?branch=master)](http://travis-ci.org/cooljeanius/linguist)
