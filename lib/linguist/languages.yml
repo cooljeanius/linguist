@@ -734,6 +734,7 @@ LLVM:
 
 LOLCODE:
   type: programming
+  lexer: Text only
   primary_extension: .lol
 
 Lasso:
