@@ -255,7 +255,7 @@ Cobol:
   - .ccp
   - .cobol
   - .cpy
-  
+
 CoffeeScript:
   type: programming
   ace_mode: coffee
@@ -643,10 +643,11 @@ INI:
   - .prefs
   - .properties
   primary_extension: .ini
-  
+
 INTERCAL:
   type: programming
   lexer: Text only
+  primary_extension: .i
 
 IRC log:
   lexer: IRC logs
@@ -731,7 +732,7 @@ LLVM:
   primary_extension: .ll
   extensions:
   - .ll
-  
+
 LOLCODE:
   type: programming
   primary_extension: .lol
@@ -911,7 +912,7 @@ Objective-C:
   - obj-c
   - objc
   primary_extension: .m
-  
+
 Objective-C++:
   type: programming
   color: "#4886FC"
@@ -1331,7 +1332,7 @@ Visual Basic:
   - .vb
   - .vba
   - .vbs
-  
+
 Whitespace:
   type: programming
   color: "FFFFFF"
