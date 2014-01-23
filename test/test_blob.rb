@@ -258,19 +258,6 @@ class TestBlob < Test::Unit::TestCase
 
     # NuGet Packages
     assert blob("packages/Modernizr.2.0.6/Content/Scripts/modernizr-2.0.6-development-only.js").vendored?
-
-    # Test fixtures
-    assert blob("test/fixtures/random.rkt").vendored?
-    assert blob("Test/fixtures/random.rkt").vendored?
-
-    # Cordova/PhoneGap
-    assert blob("cordova.js").vendored?
-    assert blob("cordova.min.js").vendored?
-    assert blob("cordova-2.1.0.js").vendored?
-    assert blob("cordova-2.1.0.min.js").vendored?
-
-    # Vagrant
-    assert blob("Vagrantfile").vendored?
   end
 
   def test_language
