@@ -182,10 +182,6 @@ class TestBlob < Test::Unit::TestCase
     assert blob("JavaScript/intro.js").generated?
     assert blob("JavaScript/classes.js").generated?
 
-    # Minified CSS
-    assert !blob("CSS/bootstrap.css").generated?
-    assert blob("CSS/bootstrap.min.css").generated?
-
     assert Linguist::Generated.generated?("node_modules/grunt/lib/grunt.js", nil)
   end
 
@@ -195,11 +191,6 @@ class TestBlob < Test::Unit::TestCase
 
     # Node dependencies
     assert blob("node_modules/coffee-script/lib/coffee-script.js").vendored?
-
-    # Bower Components
-    assert blob("bower_components/custom/custom.js").vendored?
-    assert blob("app/bower_components/custom/custom.js").vendored?
-    assert blob("vendor/assets/bower_components/custom/custom.js").vendored?
 
     # Rails vendor/
     assert blob("vendor/plugins/will_paginate/lib/will_paginate.rb").vendored?
