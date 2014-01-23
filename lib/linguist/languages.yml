@@ -646,6 +646,7 @@ INI:
   
 INTERCAL:
   type: programming
+  lexer: Text only
 
 IRC log:
   lexer: IRC logs
