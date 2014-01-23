@@ -1,5 +1,5 @@
 before_install:
-  - sudo apt-get install libicu-dev file -y
+  - sudo apt-get install libicu-dev file libmagic-dev libmagic1 libfile-libmagic-perl -y
 rvm:
   - 1.8.7
   - 1.9.2

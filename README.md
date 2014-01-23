@@ -6,11 +6,11 @@ GitHub uses this library to detect blob languages, highlight code, ignore binary
 
 ### Language detection
 
-Linguist defines the list of all languages known to GitHub in a [yaml file](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml). In order for a file to be highlighted, a language and lexer must be defined there.
+Linguist defines the list of all languages known to GitHub in a [yaml file](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/languages.yml). In order for a file to be highlighted, a language and lexer must be defined there.
 
 Most languages are detected by their file extension. This is the fastest and most common situation.
 
-For disambiguating between files with common extensions, we use a [bayesian classifier](https://github.com/github/linguist/blob/master/lib/linguist/classifier.rb). For an example, this helps us tell the difference between `.h` files which could be either C, C++, or Obj-C.
+For disambiguating between files with common extensions, we use a [bayesian classifier](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/classifier.rb). For an example, this helps us tell the difference between `.h` files which could be either C, C++, or Obj-C.
 
 In the actual GitHub app we deal with `Grit::Blob` objects. For testing, there is a simple `FileBlob` API.
 
@@ -18,13 +18,13 @@ In the actual GitHub app we deal with `Grit::Blob` objects. For testing, there i
 
     Linguist::FileBlob.new("bin/linguist").language.name #=> "Ruby"
 
-See [lib/linguist/language.rb](https://github.com/github/linguist/blob/master/lib/linguist/language.rb) and [lib/linguist/languages.yml](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml).
+See [lib/linguist/language.rb](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/language.rb) and [lib/linguist/languages.yml](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/languages.yml).
 
 ### Syntax Highlighting
 
 The actual syntax highlighting is handled by our Pygments wrapper, [pygments.rb](https://github.com/tmm1/pygments.rb). It also provides a [Lexer abstraction](https://github.com/tmm1/pygments.rb/blob/master/lib/pygments/lexer.rb) that determines which highlighter should be used on a file.
 
-We typically run on a prerelease version of Pygments, [pygments.rb](https://github.com/tmm1/pygments.rb), to get early access to new lexers. The [languages.yml](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml) file is a dump of the lexers we have available on our server.
+We typically run on a prerelease version of Pygments, [pygments.rb](https://github.com/tmm1/pygments.rb), to get early access to new lexers. The [languages.yml](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/languages.yml) file is a dump of the lexers we have available on our server.
 
 ### Stats
 
@@ -49,7 +49,7 @@ Checking other code into your git repo is a common practice. But this often infl
 
     Linguist::FileBlob.new("vendor/plugins/foo.rb").vendored? # => true
 
-See [Linguist::BlobHelper#vendored?](https://github.com/github/linguist/blob/master/lib/linguist/blob_helper.rb) and [lib/linguist/vendor.yml](https://github.com/github/linguist/blob/master/lib/linguist/vendor.yml).
+See [Linguist::BlobHelper#vendored?](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/blob_helper.rb) and [lib/linguist/vendor.yml](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/vendor.yml).
 
 #### Generated file detection
 
@@ -57,7 +57,7 @@ Not all plain text files are true source files. Generated files like minified js
 
     Linguist::FileBlob.new("underscore.min.js").generated? # => true
 
-See [Linguist::BlobHelper#generated?](https://github.com/github/linguist/blob/master/lib/linguist/blob_helper.rb).
+See [Linguist::BlobHelper#generated?](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/blob_helper.rb).
 
 ## Installation
 
@@ -75,9 +75,9 @@ To run the tests:
 
 ## Contributing
 
-The majority of patches will NOT need to touch any Ruby code at all. The [master language list](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml) is just a configuration file.
+The majority of patches will NOT need to touch any Ruby code at all. The [master language list](https://github.com/cooljeanius/linguist/blob/master/lib/linguist/languages.yml) is just a configuration file.
 
-Almost all bug fixes or new language additions should come with some additional code samples. Just drop them under [`samples/`](https://github.com/github/linguist/tree/master/samples) in the correct subdirectory and our test suite will automatically test them. In most cases you should NOT need to add any new assertions.
+Almost all bug fixes or new language additions should come with some additional code samples. Just drop them under [`samples/`](https://github.com/cooljeanius/linguist/tree/master/samples) in the correct subdirectory and our test suite will automatically test them. In most cases you should NOT need to add any new assertions.
 
 ### Testing
 
