@@ -182,12 +182,6 @@ class TestBlob < Test::Unit::TestCase
     assert blob("JavaScript/intro.js").generated?
     assert blob("JavaScript/classes.js").generated?
 
-    # Protocol Buffer generated code
-    assert blob("C++/protocol-buffer.pb.h").generated?
-    assert blob("C++/protocol-buffer.pb.cc").generated?
-    assert blob("Java/ProtocolBuffer.java").generated?
-    assert blob("Python/protocol_buffer_pb2.py").generated?
-
     # Generated JNI
     assert blob("C/jni_layer.h").generated?
 
