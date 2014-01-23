@@ -1336,6 +1336,7 @@ Visual Basic:
 Whitespace:
   type: programming
   color: "FFFFFF"
+  lexer: Text only
   primary_extension: .ws
 
 XML:
