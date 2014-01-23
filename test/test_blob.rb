@@ -126,19 +126,6 @@ class TestBlob < Test::Unit::TestCase
     assert !blob("Binary/octocat.psd").image?
   end
 
-  def test_solid
-    assert blob("Binary/cube.stl").solid?
-    assert blob("Text/cube.stl").solid?
-  end
-
-  def test_csv
-    assert blob("Text/cars.csv").csv?
-  end
-
-  def test_pdf
-    assert blob("Binary/foo.pdf").pdf?
-  end
-
   def test_viewable
     assert blob("Text/README").viewable?
     assert blob("Ruby/foo.rb").viewable?
