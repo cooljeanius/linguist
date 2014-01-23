@@ -166,9 +166,6 @@ class TestBlob < Test::Unit::TestCase
     # TypeScript-generated JS
     # TODO
 
-    # Composer generated composer.lock file
-    assert blob("JSON/composer.lock").generated?
-
     # PEG.js-generated parsers
     assert blob("JavaScript/parser.js").generated?
 
@@ -204,9 +201,6 @@ class TestBlob < Test::Unit::TestCase
   def test_vendored
     assert !blob("Text/README").vendored?
     assert !blob("ext/extconf.rb").vendored?
-
-    # Dependencies
-    assert blob("dependencies/windows/headers/GL/glext.h").vendored?
 
     # Node dependencies
     assert blob("node_modules/coffee-script/lib/coffee-script.js").vendored?
