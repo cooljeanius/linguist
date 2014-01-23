@@ -182,9 +182,6 @@ class TestBlob < Test::Unit::TestCase
     assert blob("JavaScript/intro.js").generated?
     assert blob("JavaScript/classes.js").generated?
 
-    # Generated JNI
-    assert blob("C/jni_layer.h").generated?
-
     # Minified CSS
     assert !blob("CSS/bootstrap.css").generated?
     assert blob("CSS/bootstrap.min.css").generated?
