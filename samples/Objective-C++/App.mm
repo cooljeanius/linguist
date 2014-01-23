@@ -1,3 +1,8 @@
+/*
+ * App.mm
+ * An Objective-C++ file
+ */
+
 #import "GLView.h"
 
 #import "App.h"
@@ -7,7 +12,7 @@ const float TIMER_UPDATE_HZ = 1000;
 /*	------------------------------------------------
 	Notes on Setting Up a Custom NSApplication class
 	------------------------------------------------
-	
+
 	1) in MainMenu.nib the File's Owner custom class is set to App
 	2) In Project's Application settings the Principal class is set to App
 */
@@ -19,7 +24,7 @@ const float TIMER_UPDATE_HZ = 1000;
 	self = [super init];
 
 	[self setDelegate: self]; // (to get NSApplication notifications)
-		
+
 	return self;
 }
 
@@ -53,7 +58,7 @@ const float TIMER_UPDATE_HZ = 1000;
 - (void) timerUpdate : (id) object
 {
 	sys.Process();
-	
+
 	[glView timerUpdate];
 }
 

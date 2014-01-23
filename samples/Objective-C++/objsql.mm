@@ -1,5 +1,5 @@
 /*
- *  objsql.m - implementaion simple persistence layer using objcpp.h
+ *  objsql.mm - implementaion simple persistence layer using objcpp.h
  *  ========
  *
  *  Created by John Holdsworth on 01/04/2009.
@@ -31,7 +31,7 @@
  *  objcpp@johnholdsworth.com. Thanks.
  *
  *  THIS CODE IS PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND EITHER
- *  EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+ *  EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
  *  IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
@@ -39,8 +39,8 @@
  *  THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING
  *  ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT
  *  OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
- *  TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED 
- *  BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH 
+ *  TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED
+ *  BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH
  *  ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN
  *  ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
@@ -52,10 +52,10 @@
 #import "objsql.h"
 
 #if 0
-#ifdef OODEBUG
-#define OODEBUG_SQL  1
-#endif
-#endif
+# ifdef OODEBUG
+#  define OODEBUG_SQL  1
+# endif /* OODEBUG */
+#endif /* 0 */
 
 OOOODatabase OODB;
 
@@ -69,7 +69,7 @@ static NSString *kOOObject = @"__OOOBJECT__", *kOOInsert = @"__ISINSERT__", *kOO
 	return OO_AUTORELEASE( [[self alloc] init] );
 }
 
-+ (id)insert OO_AUTORETURNS { 
++ (id)insert OO_AUTORETURNS {
 	OORecord *record = [self record];
 	[record insert];
 	return record;
@@ -114,7 +114,7 @@ static NSString *kOOObject = @"__OOOBJECT__", *kOOInsert = @"__ISINSERT__", *kOO
 }
 
 /**
- import a flat file with column values separated by the delimiter specified into 
+ import a flat file with column values separated by the delimiter specified into
  the table associated with this class.
  */
 
@@ -170,8 +170,8 @@ static NSString *kOOObject = @"__OOOBJECT__", *kOOInsert = @"__ISINSERT__", *kOO
 @interface OOAdaptor : NSObject {
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	struct _str_link { 
-		struct _str_link *next; char str[1]; 
+	struct _str_link {
+		struct _str_link *next; char str[1];
 	} *strs;
 	OO_UNSAFE OODatabase *owner;
 }
@@ -202,14 +202,14 @@ static OOReference<OODatabase *> sharedInstance;
 
 + (OODatabase *)sharedInstance {
     if ( !sharedInstance )
-        [self sharedInstanceForPath:OODocument("objsql.db").path()]; 
+        [self sharedInstanceForPath:OODocument("objsql.db").path()];
 	return sharedInstance;
 }
 
 /**
  Shared instance can be switched between any file paths.
  */
- 
+
  + (OODatabase *)sharedInstanceForPath:(cOOString)path {
      if ( !!sharedInstance )
          sharedInstance = OONil;
@@ -311,7 +311,7 @@ static OOReference<OODatabase *> sharedInstance;
  Send any SQL to the database. Sql is a format string so escape any '%' characters using '%%'.
  Any results returned are placed as an array of dictionary values in the database->results.
  */
- 
+
 - (BOOL)exec:(cOOString)fmt, ... {
 	va_list argp; va_start(argp, fmt);
 	NSString *sql = [[NSString alloc] initWithFormat:fmt arguments:argp];
@@ -393,10 +393,11 @@ static OOReference<OODatabase *> sharedInstance;
 
 #ifdef OODEBUG_SQL
 	NSLog( @"-[OOMetaData prepareSql:] %@\n%@", *sql, *joinValues );
-#endif
+#endif /* OODEBUG_SQL */
 
-	if ( ![*adaptor prepare:sql] )
+	if ( ![*adaptor prepare:sql] ) {
 		return NO;
+	}
 
 	return !parent || [*adaptor bindCols:sharedColumns values:joinValues startingAt:1 bindNulls:NO];
 }
@@ -408,7 +409,7 @@ static OOReference<OODatabase *> sharedInstance;
  */
 
 - (OOArray<OOMetaData *>)tablesRelatedByNaturalJoinFrom:(id)record {
-	OOMetaData *metaData = [record class] == [OOMetaData class] ? 
+	OOMetaData *metaData = [record class] == [OOMetaData class] ?
         record : [self tableMetaDataForClass:[record class]];
 
 	OOStringArray tablesWithNaturalJoin;
@@ -430,7 +431,7 @@ static OOReference<OODatabase *> sharedInstance;
 }
 
 /**
- Perform a select from a table on the database using either the sql specified 
+ Perform a select from a table on the database using either the sql specified
  orselect all columns from the table associated with the record class passed in.
  If a parent is passed in make a natural join from that record.
  */
@@ -510,7 +511,7 @@ static OOReference<OODatabase *> sharedInstance;
 }
 
 /**
- Use the values of the record instance at the time this method is called in a where clause to 
+ Use the values of the record instance at the time this method is called in a where clause to
  delete from the database when commit is called. Returns the total number of outstanding
  inserts/updates/deletes.
  */
@@ -546,7 +547,7 @@ static OOReference<OODatabase *> sharedInstance;
 	OOArray<id> existing = [self select:sql intoClass:nil joinFrom:record];
 	int count = [self insert:record];
 	for ( NSDictionary *exist in *existing ) {
-		OOString sql = OOFormat( @"delete from %@ where rowid = %ld", *metaData->tableName, 
+		OOString sql = OOFormat( @"delete from %@ where rowid = %ld", *metaData->tableName,
 								(long)[[exist objectForKey:@"rowid"] longLongValue] );
 		transaction += OOValueDictionary( kOOExecSQL, *sql, nil );
 	}
@@ -572,7 +573,7 @@ static OOReference<OODatabase *> sharedInstance;
 }
 
 /**
- Commit all pending inserts, updates and deletes to the database. Use commitTransaction to perform 
+ Commit all pending inserts, updates and deletes to the database. Use commitTransaction to perform
  this inside a database transaction.
  */
 
@@ -600,10 +601,10 @@ static OOReference<OODatabase *> sharedInstance;
 				if ( ![*newValues[name] isEqual:values[name]] )
 					changedCols += name;
 		}
-		else 
+		else
 			values = newValues;
 
-		OOString sql = isInsert ? 
+		OOString sql = isInsert ?
 		OOFormat( @"insert into %@ (%@) values (", *metaData->tableName, *(metaData->columns/", ") ) :
 		OOFormat( isUpdate ? @"update %@ set" : @"delete from %@", *metaData->tableName );
 
@@ -627,13 +628,15 @@ static OOReference<OODatabase *> sharedInstance;
 
 #ifdef OODEBUG_SQL
 		NSLog( @"-[OODatabase commit]: %@ %@", *sql, *values );
-#endif
+#endif /* OODEBUG_SQL */
 
-		if ( ![*adaptor prepare:sql] )
+		if ( ![*adaptor prepare:sql] ) {
 			continue;
+		}
 
-		if ( isUpdate )
+		if ( isUpdate ) {
 			[*adaptor bindCols:changedCols values:newValues startingAt:1 bindNulls:YES];
+		}
 		[*adaptor bindCols:metaData->columns values:values startingAt:1+nchanged bindNulls:isInsert];
 
 		[*adaptor bindResultsIntoInstancesOfClass:nil metaData:metaData];
@@ -655,7 +658,7 @@ static OOReference<OODatabase *> sharedInstance;
 }
 
 /**
- Rollback any outstanding inserts, updates, or deletes. Please note updated values 
+ Rollback any outstanding inserts, updates, or deletes. Please note updated values
  are also rolled back inside the actual record in the application as well.
  */
 
@@ -668,9 +671,10 @@ static OOReference<OODatabase *> sharedInstance;
 			OOMetaData *metaData = [self tableMetaDataForClass:[*record class]];
 
 #ifndef OO_ARC
-			for ( NSString *name in *metaData->boxed )
+			for ( NSString *name in *metaData->boxed ) {
                 OO_RELEASE( (id)[[*record valueForKey:name] pointerValue] );
-#endif
+			}
+#endif /* !OO_ARC */
 
 			[*record setValuesForKeysWithDictionary:[metaData decode:values]];
 		}
@@ -680,13 +684,13 @@ static OOReference<OODatabase *> sharedInstance;
 
 /**
  Find/create an instance of the OOMetaData class which describes a record class and its associated table.
- If the table does not exist it will be created along with indexes for columns/ivars which have 
+ If the table does not exist it will be created along with indexes for columns/ivars which have
  upper case names for use in joins. Details of the tables parameters can be controlled by using
  methods in the OOTableCustomisation protool. If it does not exist a meta table class which
  prepresents OOMetaData records themselves is also created from which the list of all registered
  tables can be selected.
  */
- 
+
 - (OOMetaData *)tableMetaDataForClass:(Class)recordClass {
 	if ( !recordClass || recordClass == [OOMetaData class] )
 		return [OOMetaData metaDataForClass:[OOMetaData class]];
@@ -699,15 +703,19 @@ static OOReference<OODatabase *> sharedInstance;
 
 #ifdef OODEBUG_SQL
 		NSLog(@"\n%@", *metaData->createTableSQL);
-#endif
+#endif /* OODEBUG_SQL */
 
-		if ( metaData->tableName[0] != '_' && 
+		if ( metaData->tableName[0] != '_' &&
 			[self stringForSql:"select count(*) from sqlite_master where name = '%@'",
-             *metaData->tableName] == "0" )
-			if ( [self exec:"%@", *metaData->createTableSQL] )
-				for ( NSString *idx in *metaData->indexes )
-					if ( ![self exec:idx] )
-						OOWarn( @"-[OOMetaData tableMetaDataForClass:] Error creating index: %@", idx );
+             *metaData->tableName] == "0" ) {
+				if ( [self exec:"%@", *metaData->createTableSQL] ) {
+					for ( NSString *idx in *metaData->indexes ) {
+						if ( ![self exec:idx] ) {
+							OOWarn( @"-[OOMetaData tableMetaDataForClass:] Error creating index: %@", idx );
+						}
+					}
+				}
+			}
 
 		tableMetaDataByClassName[className] = metaData;
 	}
@@ -717,9 +725,9 @@ static OOReference<OODatabase *> sharedInstance;
 
 @end
 
-#pragma mark OOAdaptor - implements all access to a particular database 
+#pragma mark OOAdaptor - implements all access to a particular database
 
-@implementation OOAdaptor 
+@implementation OOAdaptor
 
 /**
  Connect to/create sqlite3 database
@@ -750,7 +758,7 @@ static OOReference<OODatabase *> sharedInstance;
 - (int)bindValue:(id)value asParameter:(int)pno {
 #ifdef OODEBUG_BIND
 	NSLog( @"-[OOAdaptor bindValue:bindValue:] bind parameter #%d as: %@", pno, value );
-#endif
+#endif /* OODEBUG_BIND */
 	if ( !value || value == OONull )
 		return sqlite3_bind_null( stmt, pno );
 #if OOSQL_THREAD_SAFE_BUT_USES_MORE_MEMORY
@@ -765,7 +773,7 @@ static OOReference<OODatabase *> sharedInstance;
 		[value getCString:str->str maxLength:len+1 encoding:NSUTF8StringEncoding];
 		return sqlite3_bind_text( stmt, pno, str->str, len, SQLITE_STATIC );
 	}
-#endif
+#endif /* OOSQL_THREAD_SAFE_BUT_USES_MORE_MEMORY */
 	else if ( [value isKindOfClass:[NSData class]] )
 		return sqlite3_bind_blob( stmt, pno, [value bytes], (int)[value length], SQLITE_STATIC );
 
@@ -816,15 +824,15 @@ static OOReference<OODatabase *> sharedInstance;
 				value = OONull;
 				break;
 			case SQLITE_INTEGER:
-				value = [[NSNumber alloc] initWithLongLong:sqlite3_column_int64( stmt, i )]; 
+				value = [[NSNumber alloc] initWithLongLong:sqlite3_column_int64( stmt, i )];
 				break;
 			case SQLITE_FLOAT:
-				value = [[NSNumber alloc] initWithDouble:sqlite3_column_double( stmt, i )]; 
+				value = [[NSNumber alloc] initWithDouble:sqlite3_column_double( stmt, i )];
 				break;
 			case SQLITE_TEXT: {
 				const unsigned char *bytes = sqlite3_column_text( stmt, i );
 				value = [[NSMutableString alloc] initWithBytes:bytes
-														length:sqlite3_column_bytes( stmt, i) 
+														length:sqlite3_column_bytes( stmt, i)
 													  encoding:NSUTF8StringEncoding];
 			}
 				break;
@@ -929,7 +937,7 @@ static OOMetaData *tableOfTables;
         [recordClass ooTableTitle] : *recordClassName;
 	tableName = [recordClass respondsToSelector:@selector(ooTableName)] ?
         [recordClass ooTableName] : *recordClassName;
-  
+
 	if ( aClass == [OOMetaData class] ) {
 		ivars = columns = outcols = boxed = unbox =
             "tableTitle tableName recordClassName keyColumns ivars columns outcols";
@@ -1105,7 +1113,7 @@ void ooArcRetain( id value ) {
         retainIMP( value, retainSEL );
     }
 }
-#endif
+#endif /* OO_ARC */
 
 - (cOOValueDictionary)decode:(cOOValueDictionary)values {
 	id value;
@@ -1120,7 +1128,7 @@ void ooArcRetain( id value ) {
 			value = value != OONull ? OO_RETAIN( value ) : nil;
 #ifdef OO_ARC
             ooArcRetain( value );
-#endif
+#endif /* OO_ARC */
 			OO_RELEASE( values[key] = [[NSValue alloc] initWithBytes:&value objCType:@encode(id)] );
 		}
 	}
@@ -1195,7 +1203,7 @@ void ooArcRetain( id value ) {
 			metaData = [record isKindOfClass:[NSDictionary class]] ?
                 OONull : [self metaDataForClass:[record class]];
 
-		OODictionary<NSNumber *> values = metaData == OONull ? record : 
+		OODictionary<NSNumber *> values = metaData == OONull ? record :
 		*[metaData encode:[record dictionaryWithValuesForKeys:metaData->columns]];
 
 		OOStringArray line;
@@ -1256,10 +1264,11 @@ void ooArcRetain( id value ) {
 	OOView *subView;
 	for ( int i=metaData->ivars ; (subView = [view viewWithTag:1+i]) ; i++ ) {
 		subView.hidden = YES;
-		if ( (subView = [view viewWithTag:-1-i]) )
+		if ( (subView = [view viewWithTag:-1-i]) ) {
 			subView.hidden =YES;
+		}
 	}
-#endif
+#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
 }
 
 /**
@@ -1276,21 +1285,22 @@ void ooArcRetain( id value ) {
 		id value = OO_RETAIN(((UITextField *)view).text );
 
 		if ( type[0] == '{' ) {
-#ifdef OO_ARC
+# ifdef OO_ARC
             ooArcRetain( value );
-#endif
+# endif /* OO_ARC */
 			value = [[NSValue alloc] initWithBytes:&value objCType:@encode(id)];
-#ifndef OO_ARC
+# ifndef OO_ARC
 			OO_RELEASE( (id)[[record valueForKey:name] pointerValue] );
-#endif
+# endif /* !OO_ARC */
 		}
 
 		[record setValue:value forKey:name];
 		OO_RELEASE( value );
 	}
-	for ( OOView *subview in [view subviews] )
+	for ( OOView *subview in [view subviews] ) {
 		[self updateRecord:record fromView:subview];
-#endif
+	}
+#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
 }
 
 @end
@@ -1304,7 +1314,7 @@ void ooArcRetain( id value ) {
     copy.frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
 #else
     copy.frame = NSMakeRect(0.0, 0.0, self.frame.size.width, self.frame.size.height);
-#endif
+#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
     return copy;
 }
 
@@ -1347,7 +1357,7 @@ static int unhex ( unsigned char ch ) {
 @interface NSArray(OOExtras)
 @end
 @implementation NSArray(OOExtras)
-- (NSString *)stringValue { 
+- (NSString *)stringValue {
 	static OOReplace reformat( "/(\\s)\\s+|^\\(|\\)$|\"/$1/" );
 	return &([self description] | reformat);
 }
@@ -1356,7 +1366,7 @@ static int unhex ( unsigned char ch ) {
 @interface NSDictionary(OOExtras)
 @end
 @implementation NSDictionary(OOExtras)
-- (NSString *)stringValue { 
+- (NSString *)stringValue {
 	static OOReplace reformat( "/(\\s)\\s+|^\\{|\\}$|\"/$1/" );
 	return &([self description] | reformat);
 }
@@ -1368,5 +1378,6 @@ static int unhex ( unsigned char ch ) {
 @implementation UISwitch(OOExtras)
 - (NSString *)text { return self.on ? @"1" : @"0"; }
 @end
-#endif
+#endif /* __IPHONE_OS_VERSION_MIN_REQUIRED */
 
+/* EOF */

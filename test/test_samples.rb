@@ -11,7 +11,7 @@ class TestSamples < Test::Unit::TestCase
     assert serialized = Samples::DATA
     assert latest = Samples.data
 
-    # Just warn, it shouldn't scare people off by breaking the build.
+    # Just warn, it should NOT scare people off by breaking the build.
     if serialized['md5'] != latest['md5']
       warn "Samples database is out of date. Run `bundle exec rake samples`."
 
