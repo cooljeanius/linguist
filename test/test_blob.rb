@@ -181,8 +181,6 @@ class TestBlob < Test::Unit::TestCase
 
     assert blob("JavaScript/intro.js").generated?
     assert blob("JavaScript/classes.js").generated?
-
-    assert Linguist::Generated.generated?("node_modules/grunt/lib/grunt.js", nil)
   end
 
   def test_vendored
@@ -194,9 +192,6 @@ class TestBlob < Test::Unit::TestCase
 
     # Rails vendor/
     assert blob("vendor/plugins/will_paginate/lib/will_paginate.rb").vendored?
-
-    # 'thirdparty' directory
-    assert blob("thirdparty/lib/main.c").vendored?
 
     # C deps
     assert blob("deps/http_parser/http_parser.c").vendored?
