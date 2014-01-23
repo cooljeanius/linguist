@@ -248,7 +248,13 @@ Clojure:
 
 Cobol:
   type: programming
+  lexer: Text only
   primary_extension: .cob
+  extensions:
+  - .cbl
+  - .ccp
+  - .cobol
+  - .cpy
   
 CoffeeScript:
   type: programming
