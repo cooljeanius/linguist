@@ -4,10 +4,11 @@ before_install:
   - export LDFLAGS="${LDFLAGS} $(icu-config --ldflags) $(pkg-config --libs zlib)"
   - env | uniq | sort | uniq
 rvm:
-  - 1.8.7
   - 1.9.2
   - 1.9.3
   - 2.0.0
+  - 2.1.0
   - ree
+  - rbx
 notifications:
   disabled: true
