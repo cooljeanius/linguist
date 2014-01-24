@@ -1,5 +1,8 @@
 before_install:
-  - sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl -y
+  - sudo apt-get update
+  - sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl zlib pkg-config ruby-pkg-config -y
+  - export LDFLAGS="${LDFLAGS} $(icu-config --ldflags) $(pkg-config --libs zlib)"
+  - env | uniq | sort | uniq
 rvm:
   - 1.8.7
   - 1.9.2
