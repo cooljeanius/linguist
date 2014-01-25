@@ -251,10 +251,7 @@ Cobol:
   lexer: Text only
   primary_extension: .cob
   extensions:
-  - .cbl
-  - .ccp
   - .cobol
-  - .cpy
 
 CoffeeScript:
   type: programming
@@ -743,12 +740,6 @@ Lasso:
   ace_mode: lasso
   color: "#2584c3"
   primary_extension: .lasso
-  extensions:
-  - .inc
-  - .las
-  - .lasso
-  - .lasso9
-  - .ldml
 
 LilyPond:
   lexer: Text only

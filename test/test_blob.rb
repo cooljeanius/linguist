@@ -272,14 +272,6 @@ class TestBlob < Test::Unit::TestCase
     assert_equal Lexer['Ruby'], blob("Ruby/foo.rb").lexer
   end
 
-  def test_colorize
-    assert_equal <<-HTML.chomp, blob("Ruby/foo.rb").colorize
-<div class="highlight"><pre><span class="k">module</span> <span class="nn">Foo</span>
-<span class="k">end</span>
-</pre></div>
-    HTML
-  end
-
   def test_colorize_does_skip_minified_files
     assert_nil blob("JavaScript/jquery-1.6.1.min.js").colorize
   end
