@@ -1,85 +1,159 @@
 # Linguist
 
-We use this library at GitHub to detect blob languages, highlight code, ignore binary files, suppress generated files in diffs and generate language breakdown graphs.
+[![Actions Status](https://github.com/github/linguist/workflows/Run%20Tests/badge.svg)](https://github.com/github/linguist/actions)
 
-## Features
+[issues]: https://github.com/github/linguist/issues
+[new-issue]: https://github.com/github/linguist/issues/new
 
-### Language detection
+This library is used on GitHub.com to detect blob languages, ignore binary or vendored files, suppress generated files in diffs, and generate language breakdown graphs.
 
-Linguist defines the list of all languages known to GitHub in a [yaml file](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml). In order for a file to be highlighted, a language and lexer must be defined there.
+## Documentation
 
-Most languages are detected by their file extension. This is the fastest and most common situation.
-
-For disambiguating between files with common extensions, we use a [bayesian classifier](https://github.com/github/linguist/blob/master/lib/linguist/classifier.rb). For an example, this helps us tell the difference between `.h` files which could be either C, C++, or Obj-C.
-
-In the actual GitHub app we deal with `Grit::Blob` objects. For testing, there is a simple `FileBlob` API.
-
-    Linguist::FileBlob.new("lib/linguist.rb").language.name #=> "Ruby"
-
-    Linguist::FileBlob.new("bin/linguist").language.name #=> "Ruby"
-
-See [lib/linguist/language.rb](https://github.com/github/linguist/blob/master/lib/linguist/language.rb) and [lib/linguist/languages.yml](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml).
-
-### Syntax Highlighting
-
-The actual syntax highlighting is handled by our Pygments wrapper, [pygments.rb](https://github.com/tmm1/pygments.rb). It also provides a [Lexer abstraction](https://github.com/tmm1/pygments.rb/blob/master/lib/pygments/lexer.rb) that determines which highlighter should be used on a file.
-
-We typically run on a prerelease version of Pygments, [pygments.rb](https://github.com/tmm1/pygments.rb), to get early access to new lexers. The [lexers.yml](https://github.com/github/linguist/blob/master/lib/linguist/lexers.yml) file is a dump of the lexers we have available on our server.
-
-### Stats
-
-The Language Graph you see on every repository is built by aggregating the languages of all repo's blobs. The top language in the graph determines the project's primary language. Collectively, these stats make up the [Top Languages](https://github.com/languages) page.
-
-The repository stats API can be used on a directory:
-
-    project = Linguist::Repository.from_directory(".")
-    project.language.name  #=> "Ruby"
-    project.languages      #=> { "Ruby" => 0.98,
-                                 "Shell" => 0.02 }
-
-These stats are also printed out by the binary. Try running `linguist` on itself:
-
-    $ bundle exec linguist lib/
-    100%  Ruby
-
-#### Ignore vendored files
-
-Checking other code into your git repo is a common practice. But this often inflates your project's language stats and may even cause your project to be labeled as another language. We are able to identify some of these files and directories and exclude them.
-
-    Linguist::FileBlob.new("vendor/plugins/foo.rb").vendored? # => true
-
-See [Linguist::BlobHelper#vendored?](https://github.com/github/linguist/blob/master/lib/linguist/blob_helper.rb) and [lib/linguist/vendor.yml](https://github.com/github/linguist/blob/master/lib/linguist/vendor.yml).
-
-#### Generated file detection
-
-Not all plain text files are true source files. Generated files like minified js and compiled CoffeeScript can be detected and excluded from language stats. As an extra bonus, these files are suppressed in Diffs.
-
-    Linguist::FileBlob.new("underscore.min.js").generated? # => true
-
-See [Linguist::BlobHelper#generated?](https://github.com/github/linguist/blob/master/lib/linguist/blob_helper.rb).
+- [How Linguist works](/docs/how-linguist-works.md)
+- [Change Linguist's behaviour with overrides](/docs/overrides.md)
+- [Troubleshooting](/docs/troubleshooting.md)
+- [Contributing guidelines](CONTRIBUTING.md)
 
 ## Installation
 
-github.com is usually running the latest version of the `github-linguist` gem that is released on [RubyGems.org](http://rubygems.org/gems/github-linguist).
+Install the gem:
 
-But for development you are going to want to checkout out the source. To get it, clone the repo and run [Bundler](http://gembundler.com/) to install its dependencies.
+```bash
+gem install github-linguist
+```
 
-    git clone https://github.com/github/linguist.git
-    cd linguist/
-    bundle install
+### Dependencies
 
-To run the tests:
+Linguist is a Ruby library so you will need a recent version of Ruby installed.
+There are known problems with the macOS/XCode supplied version of Ruby that causes problems installing some of the dependencies.
+Accordingly, we highly recommend you install a version of Ruby using Homebrew, `rbenv`, `rvm`, `ruby-build`, `asdf` or other packaging system, before attempting to install Linguist and the dependencies.
 
-    bundle exec rake test
+Linguist uses [`charlock_holmes`](https://github.com/brianmario/charlock_holmes) for character encoding and [`rugged`](https://github.com/libgit2/rugged) for libgit2 bindings for Ruby.
+These components have their own dependencies.
+1. charlock_holmes
+    * cmake
+    * pkg-config
+    * [ICU](http://site.icu-project.org/)
+    * [zlib](https://zlib.net/)
+2. rugged
+    * [libcurl](https://curl.haxx.se/libcurl/)
+    * [OpenSSL](https://www.openssl.org)
+
+You may need to install missing dependencies before you can install Linguist.
+For example, on macOS with [Homebrew](http://brew.sh/):
+
+```bash
+brew install cmake pkg-config icu4c
+```
+
+On Ubuntu:
+
+```bash
+sudo apt-get install cmake pkg-config libicu-dev zlib1g-dev libcurl4-openssl-dev libssl-dev ruby-dev
+```
+
+## Usage
+
+### Application usage
+
+Linguist can be used in your application as follows:
+
+```ruby
+require 'rugged'
+require 'linguist'
+
+repo = Rugged::Repository.new('.')
+project = Linguist::Repository.new(repo, repo.head.target_id)
+project.language       #=> "Ruby"
+project.languages      #=> { "Ruby" => 119387 }
+```
+
+### Command line usage
+
+#### Git Repository
+
+A repository's languages stats can also be assessed from the command line using the `github-linguist` executable.
+Without any options, `github-linguist` will output the breakdown that correlates to what is shown in the language stats bar.
+The `--breakdown` flag will additionally show the breakdown of files by language.
+
+```bash
+cd /path-to-repository/
+github-linguist
+```
+
+You can try running `github-linguist` on the root directory in this repository itself:
+
+```console
+$ github-linguist --breakdown
+68.57%  Ruby
+22.90%  C
+6.93%   Go
+1.21%   Lex
+0.39%   Shell
+
+Ruby:
+Gemfile
+Rakefile
+bin/git-linguist
+bin/github-linguist
+ext/linguist/extconf.rb
+github-linguist.gemspec
+lib/linguist.rb
+…
+```
+
+#### Single file
+
+Alternatively you can find stats for a single file using the `github-linguist` executable.
+
+You can try running `github-linguist` on files in this repository itself:
+
+```console
+$ github-linguist grammars.yml
+grammars.yml: 884 lines (884 sloc)
+  type:      Text
+  mime type: text/x-yaml
+  language:  YAML
+```
+
+#### Docker
+
+If you have Docker installed you can build an image and run Linguist within a container:
+
+```console
+$ docker build -t linguist .
+$ docker run --rm -v $(pwd):$(pwd) -w $(pwd) -t linguist
+68.57%  Ruby
+22.90%  C
+6.93%   Go
+1.21%   Lex
+0.39%   Shell
+$ docker run --rm -v $(pwd):$(pwd) -w $(pwd) -t linguist github-linguist --breakdown
+68.57%  Ruby
+22.90%  C
+6.93%   Go
+1.21%   Lex
+0.39%   Shell
+
+Ruby:
+Gemfile
+Rakefile
+bin/git-linguist
+bin/github-linguist
+ext/linguist/extconf.rb
+github-linguist.gemspec
+lib/linguist.rb
+…
+```
 
 ## Contributing
 
-The majority of patches won't need to touch any Ruby code at all. The [master language list](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml) is just a configuration file.
+Please check out our [contributing guidelines](CONTRIBUTING.md).
 
-Almost all bug fixes or new language additions should come with some additional code samples. Just drop them under [`samples/`](https://github.com/github/linguist/tree/master/samples) in the correct subdirectory and our test suite will automatically test them. In most cases you shouldn't need to add any new assertions.
 
-### Testing
+## License
 
-Sometimes getting the tests running can be to much work especially if you don't have much Ruby experience. Its okay, be lazy and let our build bot [Travis](http://travis-ci.org/#!/github/linguist) run the tests for you. Just open a pull request and the bot will start cranking away.
+The language grammars included in this gem are covered by their repositories' respective licenses.
+[`vendor/README.md`](/vendor/README.md) lists the repository for each grammar.
 
-Heres our current build status, which is hopefully green: [![Build Status](https://secure.travis-ci.org/github/linguist.png?branch=master)](http://travis-ci.org/github/linguist)
+All other files are covered by the MIT license, see [`LICENSE`](./LICENSE).
