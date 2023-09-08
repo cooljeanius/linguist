@@ -1,10 +1,12 @@
 ---
-type: git_submodule
 name: NimLime
-version: b16e7469dd8a6a9e3e77382dfce642d424a472af
+version: ed54a219a55aebd6d6163197597dde961093cdce
+type: git_submodule
+homepage: https://github.com/nim-lang/NimLime
 license: mit
 licenses:
-- text: |-
+- sources: LICENSE
+  text: |
     The MIT License (MIT)
 
     Copyright (c) 2013 onionhammer (Erik O'Leary), Varriount (Clay Sweetser)

@@ -1,6 +1,6 @@
 ---
 name: TypeScript-TmLanguage
-version: ce4c787e315951e209d84078a469b4ad82ee3de7
+version: eac74a19eaa97d0ef56cc26cffa7d3e1ec124347
 type: git_submodule
 homepage: https://github.com/Microsoft/TypeScript-TmLanguage
 license: mit

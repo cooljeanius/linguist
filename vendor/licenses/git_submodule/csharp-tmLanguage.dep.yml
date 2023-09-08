@@ -1,6 +1,6 @@
 ---
 name: csharp-tmLanguage
-version: 0e6f14e347b59daf6b1a69499c5e5dd376ec872f
+version: dcdc373e2eac4fc6c91b0118e33622a6be223699
 type: git_submodule
 homepage: https://github.com/dotnet/csharp-tmLanguage
 license: mit

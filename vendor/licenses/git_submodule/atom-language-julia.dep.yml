@@ -1,6 +1,6 @@
 ---
 name: atom-language-julia
-version: d010dda4684a7edb7d4396ed7525e8ade29bd6c2
+version: 95bcb952a4b617152ae7298fcc4ca0a6ea29b06f
 type: git_submodule
 homepage: https://github.com/JuliaEditorSupport/atom-language-julia
 license: mit
