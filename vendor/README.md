@@ -61,6 +61,7 @@ This is a list of grammars that Linguist selects to provide syntax highlighting 
 - **BlitzBasic:** [textmate/blitzmax.tmbundle](https://github.com/textmate/blitzmax.tmbundle)
 - **BlitzMax:** [textmate/blitzmax.tmbundle](https://github.com/textmate/blitzmax.tmbundle)
 - **Bluespec:** [thotypous/sublime-bsv](https://github.com/thotypous/sublime-bsv)
+- **Bluespec BH:** [atom-haskell/language-haskell](https://github.com/atom-haskell/language-haskell)
 - **Boo:** [drslump/sublime-boo](https://github.com/drslump/sublime-boo)
 - **Boogie:** [boogie-org/boogie-vscode](https://github.com/boogie-org/boogie-vscode)
 - **Brainfuck:** [Drako/SublimeBrainfuck](https://github.com/Drako/SublimeBrainfuck)
@@ -466,6 +467,7 @@ This is a list of grammars that Linguist selects to provide syntax highlighting 
 - **Redirect Rules:** [Nixinova/NovaGrammars](https://github.com/Nixinova/NovaGrammars)
 - **Regular Expression:** [tree-sitter/tree-sitter-regex](https://github.com/tree-sitter/tree-sitter-regex) 🐌
 - **Ren'Py:** [williamd1k0/language-renpy](https://github.com/williamd1k0/language-renpy)
+- **Rez:** [textmate/rez.tmbundle](https://github.com/textmate/rez.tmbundle)
 - **Rich Text Format:** [nwhetsell/language-rtf](https://github.com/nwhetsell/language-rtf)
 - **Ring:** [MahmoudFayed/atom-language-ring](https://github.com/MahmoudFayed/atom-language-ring)
 - **Riot:** [riot/syntax-highlight](https://github.com/riot/syntax-highlight)

@@ -641,9 +641,28 @@ Bluespec:
   color: "#12223c"
   extensions:
   - ".bsv"
+  aliases:
+  - bluespec bsv
+  - bsv
   tm_scope: source.bsv
   ace_mode: verilog
+  codemirror_mode: verilog
+  codemirror_mime_type: text/x-systemverilog
   language_id: 36
+Bluespec BH:
+  type: programming
+  group: Bluespec
+  color: "#12223c"
+  extensions:
+  - ".bs"
+  aliases:
+  - bh
+  - bluespec classic
+  tm_scope: source.haskell
+  ace_mode: haskell
+  codemirror_mode: haskell
+  codemirror_mime_type: text/x-haskell
+  language_id: 641580358
 Boo:
   type: programming
   color: "#d4bec1"
@@ -2179,6 +2198,7 @@ GLSL:
   - ".tese"
   - ".vert"
   - ".vrx"
+  - ".vs"
   - ".vsh"
   - ".vshader"
   tm_scope: source.glsl
@@ -2638,8 +2658,8 @@ HOCON:
   extensions:
   - ".hocon"
   filenames:
-  - .scalafix.conf
-  - .scalafmt.conf
+  - ".scalafix.conf"
+  - ".scalafmt.conf"
   tm_scope: source.hocon
   ace_mode: text
   language_id: 679725279
@@ -2846,6 +2866,8 @@ Hosts File:
   color: "#308888"
   filenames:
   - HOSTS
+  - hosts
+  aliases:
   - hosts
   tm_scope: source.hosts
   ace_mode: text
@@ -3155,6 +3177,7 @@ JSON with Comments:
   extensions:
   - ".jsonc"
   - ".code-snippets"
+  - ".code-workspace"
   - ".sublime-build"
   - ".sublime-commands"
   - ".sublime-completions"
@@ -4858,6 +4881,8 @@ Option List:
   - ackrc
   filenames:
   - ".ackrc"
+  - ".rspec"
+  - ".yardopts"
   - ackrc
   - mocha.opts
   tm_scope: source.opts
@@ -5136,6 +5161,8 @@ Pic:
   extensions:
   - ".pic"
   - ".chem"
+  aliases:
+  - pikchr
   ace_mode: text
   codemirror_mode: troff
   codemirror_mime_type: text/troff
@@ -5886,6 +5913,14 @@ RenderScript:
   tm_scope: none
   ace_mode: text
   language_id: 323
+Rez:
+  type: programming
+  extensions:
+  - ".r"
+  tm_scope: source.rez
+  ace_mode: text
+  color: "#FFDAB3"
+  language_id: 498022874
 Rich Text Format:
   type: markup
   extensions:
@@ -6819,7 +6854,7 @@ TI Program:
 TL-Verilog:
   type: programming
   extensions:
-    - ".tlv"
+  - ".tlv"
   tm_scope: source.tlverilog
   ace_mode: verilog
   color: "#C40023"
