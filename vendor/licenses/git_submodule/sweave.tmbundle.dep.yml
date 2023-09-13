@@ -1,11 +1,11 @@
 ---
-name: abap.tmbundle
-version: a9b2efff4f4afa469d984353384f09e4ebd24055
+name: sweave.tmbundle
+version: d69ff113e77af07d46624095c413f5e60572a8fe
 type: git_submodule
-homepage: https://github.com/pvl/abap.tmbundle
+homepage: https://github.com/textmate/sweave.tmbundle.git
 license: permissive
 licenses:
-- sources: README.md
+- sources: README.mdown
   text: "If not otherwise specified (see below), files in this repository fall under
     the following license:\n\n\tPermission to copy, use, modify, sell and distribute
     this\n\tsoftware is granted. This software is provided \"as is\" without\n\texpress
