@@ -1,0 +1,35 @@
+name: cooljeanius/linguist
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-16.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.0.0
+    - uses: ruby/setup-ruby@v1.153.0
+      with:
+        ruby-version: "${{ matrix.rvm }}"
+    - run: sudo apt-get update
+    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
+    - run: export LDFLAGS="${LDFLAGS} $(icu-config --ldflags) $(pkg-config --libs zlib)"
+    - run: env | uniq | sort | uniq
+    - run: gem install bundler
+    - run: bundle install --jobs=3 --retry=3
+    - run: rake
+#     # This item has no matching transformer
+#     - disabled: true
+    strategy:
+      matrix:
+        rvm:
+        - 1.9.2
+        - 1.9.3
+        - 2.0.0
+        - 2.1.0
+        - ree
