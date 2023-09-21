@@ -1,3 +1,7 @@
+os: linux
+dist: xenial
+language: ruby
+
 before_install:
   - sudo apt-get update
   - sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
