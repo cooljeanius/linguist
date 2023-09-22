@@ -3,3 +3,4 @@ Gemfile.lock
 autoscan.log
 configure.scan
 .env.local
+log/valet-*.log
