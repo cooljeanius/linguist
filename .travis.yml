@@ -16,10 +16,10 @@ before_install:
   - export LDFLAGS="${LDFLAGS} $(icu-config --ldflags) $(pkg-config --libs zlib) -L/usr/lib"
   - env | uniq | sort | uniq
 rvm:
-  - 1.9.2
   - 1.9.3
-  - 2.0.0
   - 2.1.0
+  - 2.2.0
+  - 2.3.0
   - ree
 notifications:
   disabled: true
