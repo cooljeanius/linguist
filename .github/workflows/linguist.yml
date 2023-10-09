@@ -6,7 +6,7 @@ on:
   pull_request:
 jobs:
   test:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
     - name: checkout
       uses: actions/checkout@v4.0.0
@@ -14,8 +14,8 @@ jobs:
       with:
         ruby-version: "${{ matrix.rvm }}"
     - run: sudo apt-get update
-    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
-    - run: export LDFLAGS="${LDFLAGS} $(icu-config --ldflags) $(pkg-config --libs zlib)"
+    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config libmagic-ext -y
+    - run: ICU_LDFLAGS="$(icu-config --ldflags)"; export ICU_LDFLAGS; ZLIB_LDFLAGS="$(pkg-config --libs zlib)"; export ZLIB_LDFLAGS; export LDFLAGS="${LDFLAGS} ${ICU_LDFLAGS} ${ZLIB_LDFLAGS}"
     - run: env | uniq | sort | uniq
     - run: gem install bundler
     - run: bundle install --jobs=3 --retry=3
