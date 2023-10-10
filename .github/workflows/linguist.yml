@@ -19,7 +19,7 @@ jobs:
     - run: env | uniq | sort | uniq
     - run: gem install bundler
     - run: bundle install --jobs=3 --retry=3
-    - run: rake
+    - run: rake --trace
 #     # This item has no matching transformer
 #     - disabled: true
     strategy:
