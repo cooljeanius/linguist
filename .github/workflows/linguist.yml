@@ -20,6 +20,8 @@ jobs:
     - run: gem install bundler
     - run: bundle install --jobs=3 --retry=3
     - run: rake --trace
+    - run: if test -e Rakefile; then cat Rakefile; fi; sleep 1
+      if: "${{ failure() }}"
 #     # This item has no matching transformer
 #     - disabled: true
     strategy:
