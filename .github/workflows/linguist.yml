@@ -14,7 +14,7 @@ jobs:
       with:
         ruby-version: "${{ matrix.rvm }}"
     - run: sudo apt-get update
-    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config libmagic-ext -y
+    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
     - run: ICU_LDFLAGS="$(icu-config --ldflags)"; export ICU_LDFLAGS; ZLIB_LDFLAGS="$(pkg-config --libs zlib)"; export ZLIB_LDFLAGS; export LDFLAGS="${LDFLAGS} ${ICU_LDFLAGS} ${ZLIB_LDFLAGS}"
     - run: env | uniq | sort | uniq
     - run: gem install bundler
