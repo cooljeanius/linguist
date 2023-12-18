@@ -17,7 +17,7 @@ jobs:
     - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
     - run: if test -x "$(which icu-config)"; then ICU_LDFLAGS="$(icu-config --ldflags)"; else ICU_LDFLAGS="$(pkg-config --libs icu-i18n icu-io icu-uc)"; fi; export ICU_LDFLAGS; ZLIB_LDFLAGS="$(pkg-config --libs zlib)"; export ZLIB_LDFLAGS; export LDFLAGS="${LDFLAGS} ${ICU_LDFLAGS} ${ZLIB_LDFLAGS}"
     - run: env | uniq | sort | uniq
-    - run: gem install bundler
+    - run: if test -x "$(which bundle)"; then echo "using $(which bundle)"; else gem install bundler; fi
     - run: bundle install --jobs=3 --retry=3
     - run: rake --trace --backtrace --job-stats --rules --verbose || ruby -cwv Rakefile || ruby -c Rakefile
     - run: if test -e Rakefile; then cat Rakefile; fi; sleep 1
