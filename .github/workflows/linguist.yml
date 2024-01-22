@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v4
-    - uses: ruby/setup-ruby@v1.165.1
+    - uses: ruby/setup-ruby@v1.168.0
       with:
         ruby-version: "${{ matrix.rvm }}"
     - run: sudo apt-get update
