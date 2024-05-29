@@ -1,12 +1,14 @@
 ---
-name: vscode-vba-json
-version: 4df0db50f52c8e4d48f590c9a517ced204e8dce9
+name: syntax
+version: aa2c94baeea2856835f87bd206237c550197e97f
 type: git_submodule
-homepage: https://github.com/tiabeast/vscode-vba-json.git
+homepage: https://github.com/hashicorp/syntax.git
 license: mpl-2.0
 licenses:
-- sources: LICENSE.txt
+- sources: LICENSE
   text: |
+    Copyright (c) 2020 HashiCorp, Inc.
+
     Mozilla Public License Version 2.0
     ==================================
 
