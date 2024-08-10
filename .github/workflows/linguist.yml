@@ -1,33 +1,40 @@
+---
 name: cooljeanius/linguist
 on:
   push:
     branches:
-    - "**/*"
+      - "**/*"
   pull_request:
 jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
-    - name: checkout
-      uses: actions/checkout@v4
-    - uses: ruby/setup-ruby@v1.190.0
-      with:
-        ruby-version: "${{ matrix.rvm }}"
-    - run: sudo apt-get update
-    - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config -y
-    - run: if test -x "$(which icu-config)"; then ICU_LDFLAGS="$(icu-config --ldflags)"; else ICU_LDFLAGS="$(pkg-config --libs icu-i18n icu-io icu-uc)"; fi; export ICU_LDFLAGS; ZLIB_LDFLAGS="$(pkg-config --libs zlib)"; export ZLIB_LDFLAGS; export LDFLAGS="${LDFLAGS} ${ICU_LDFLAGS} ${ZLIB_LDFLAGS}"
-    - run: env | uniq | sort | uniq
-    - run: if test -x "$(which bundle)"; then echo "using $(which bundle)"; else gem install bundler; fi
-    - run: bundle install --jobs=3 --retry=3
-    - run: rake --trace --backtrace --job-stats --rules --verbose || ruby -cwv Rakefile || ruby -c Rakefile
-    - run: if test -e Rakefile; then cat Rakefile; fi; sleep 1
-      if: "${{ failure() }}"
-#     # This item has no matching transformer
-#     - disabled: true
+      - name: checkout
+        uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1.190.0
+        with:
+          ruby-version: "${{ matrix.rvm }}"
+      - run: sudo apt-get -qq update
+      - run: sudo apt-get install libicu-dev icu-doc file libmagic-dev libmagic1 libfile-libmagic-perl pkg-config ruby-pkg-config yamllint -y
+      - run: if test -x "$(which icu-config)"; then ICU_LDFLAGS="$(icu-config --ldflags)"; else ICU_LDFLAGS="$(pkg-config --libs icu-i18n icu-io icu-uc)"; fi; export ICU_LDFLAGS; ZLIB_LDFLAGS="$(pkg-config --libs zlib)"; export ZLIB_LDFLAGS; export LDFLAGS="${LDFLAGS} ${ICU_LDFLAGS} ${ZLIB_LDFLAGS}"
+      - run: env | uniq | sort | uniq
+      - run: if test -x "$(which bundle)"; then echo "using $(which bundle)"; else gem install bundler; fi
+      - run: bundle install --jobs=3 --retry=3
+      - run: rake --trace --backtrace --job-stats --rules --verbose || ruby -cwv Rakefile || ruby -c Rakefile
+      - run: if test -e Rakefile; then cat Rakefile; fi; sleep 1
+        if: "${{ failure() }}"
+      - name: Lint
+        run: |
+          if test -x "$(which actionlint)"; then \
+            which actionlint && actionlint; \
+          elif test -x "$(which yamllint)"; then \
+            find lib -name '*.yml' -print0 | xargs -0 yamllint; \
+            which yamllint && yamllint .github/dependabot.yml; \
+          fi
     strategy:
       matrix:
         rvm:
-        - 2.6.0
-        - 2.6.10
-        - 2.7.0
-        - 2.7.8
+          - 2.6.0
+          - 2.6.10
+          - 2.7.0
+          - 2.7.8
