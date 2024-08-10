@@ -4,3 +4,7 @@ autoscan.log
 configure.scan
 .env.local
 log/valet-*.log
+tmp/*
+lib/linguist/linguist.bundle
+vendor/CodeMirror/*
+vendor/grammars/*
