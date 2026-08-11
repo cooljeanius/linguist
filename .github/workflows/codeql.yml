@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['ruby']
+        language: ['actions', 'ruby']
         # CodeQL supports:
         # ['c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift']
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
